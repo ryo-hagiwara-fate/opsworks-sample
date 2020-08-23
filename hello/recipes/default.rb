@@ -64,6 +64,7 @@ script "install_cloudwatch_agent" do
       wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
       rpm -U ./amazon-cloudwatch-agent.rpm
     EOL
+    ignore_failure true
     action :run
 end
 
