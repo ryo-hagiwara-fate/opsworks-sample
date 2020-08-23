@@ -24,7 +24,7 @@ remote_file '/root/latest-ja.tar.gz' do
     group 'root'
     mode '0444'
     action :create
-  end
+end
   
 script "install_wordpress" do
     interpreter "bash"
@@ -36,7 +36,7 @@ script "install_wordpress" do
       cp -R -p * /usr/share/nginx/html 
     EOL
     action :run
-  end
+end
 
 service "nginx" do
     action [ :enable, :start]
@@ -53,4 +53,24 @@ cookbook_file '/var/config.json' do
     group 'root'
     mode '0755'
     action :create
+end
+
+script "install_cloudwatch_agent" do
+    interpreter "bash"
+    user        "root"
+    cwd         "/root"
+    code <<-EOL
+      cd /opt/aws
+      wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+      rpm -U ./amazon-cloudwatch-agent.rpm
+    EOL
+    action :run
+end
+
+package "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" do
+    action :install
+end
+
+package "collectd" do
+    action :install
 end
