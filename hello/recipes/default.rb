@@ -47,14 +47,6 @@ service "php-fpm" do
 end
 
 
-cookbook_file '/opt/aws/amazon-cloudwatch-agent/bin/config.json' do
-    source 'config.json'
-    owner 'root'
-    group 'root'
-    mode '0755'
-    action :create
-end
-
 script "install_cloudwatch_agent" do
     interpreter "bash"
     user        "root"
@@ -74,6 +66,14 @@ end
 
 package "collectd" do
     action :install
+end
+
+cookbook_file '/opt/aws/amazon-cloudwatch-agent/bin/config.json' do
+    source 'config.json'
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
 end
 
 script "start cloudwatch agent" do
