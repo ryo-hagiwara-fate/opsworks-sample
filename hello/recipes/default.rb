@@ -32,7 +32,16 @@ remote_file '/root/latest-ja.tar.gz' do
     cwd         "/root"
     code <<-EOL
       tar xzvf latest-ja.tar.gz
-      mv wordpress /usr/share/nginx/html 
+      cd wordpress
+      cp -R -p * /usr/share/nginx/html 
     EOL
     action :run
   end
+
+service "nginx" do
+    action [ :enable, :start]
+end
+
+service "php-fpm" do
+    action [ :enable, :start]
+end
