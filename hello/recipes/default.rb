@@ -68,10 +68,11 @@ script "install_cloudwatch_agent" do
     action :run
 end
 
-# package "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" do
-#     action :install
-# end
+package "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" do
+    action :install
+    ignore_failure true
+end
 
-# package "collectd" do
-#     action :install
-# end
+package "collectd" do
+    action :install
+end
