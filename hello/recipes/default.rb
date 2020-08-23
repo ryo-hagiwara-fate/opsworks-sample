@@ -58,9 +58,8 @@ end
 script "install_cloudwatch_agent" do
     interpreter "bash"
     user        "root"
-    cwd         "/root"
+    cwd         "/opt/aws"
     code <<-EOL
-      cd /opt/aws
       wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
       rpm -U ./amazon-cloudwatch-agent.rpm
     EOL
@@ -75,4 +74,15 @@ end
 
 package "collectd" do
     action :install
+end
+
+script "start cloudwatch agent" do
+    interpreter "bash"
+    user        "root"
+    cwd         "/root"
+    code <<-EOL
+        /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -s -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
+        /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a start
+    EOL
+    action :run
 end
