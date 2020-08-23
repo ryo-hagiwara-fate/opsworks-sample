@@ -46,12 +46,6 @@ service "php-fpm" do
     action [ :enable, :start]
 end
 
-file '/var/config.json' do
-    content '<html>This is a placeholder for the home page.</html>'
-    mode '0755'
-    owner 'web_admin'
-    group 'web_admin'
-  end
 
 cookbook_file '/var/config.json' do
     source 'config.json'
